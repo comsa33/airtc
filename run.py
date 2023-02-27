@@ -28,9 +28,9 @@ candidate_labels = ['적극적', '수동적', '자신감', '신중함', '책임�
 multi_label_input = "ON"
 
 df_concat = funcs.get_df_concat(reviews_chunks, candidate_labels, sample_n)
+st.dataframe(df_concat)
 
 result_dict = {}
-
 for col_no in range(0, 10, 2):
     for i, row in df_concat.iterrows():
         labels = row[f'labels_{col_no}']

@@ -58,7 +58,7 @@ def get_result(_model, docs, candidate_labels, multi_label_input, idx, sample_n)
 def get_df_concat(reviews_chunks, candidate_labels, sample_n):
     model = get_model()
     df_concat = pd.DataFrame()
-    for i in range(0, len(candidate_labels), 2):
+    for i in stqdm(range(0, len(candidate_labels), 2)):
         result = get_result(model, reviews_chunks, candidate_labels[i:i+2], 'OFF', 0, sample_n).rename(columns={"labels": f"labels_{i}", "scores": f"scores_{i}"})
         if not df_concat.empty:
             df_concat = pd.concat([df_concat, result.iloc[:,2:]], axis=1)
