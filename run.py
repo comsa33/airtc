@@ -3,7 +3,7 @@ import streamlit as st
 import functions as funcs
 
 
-jp_df, comp_name_ls = funcs.get_data()
+st.session_state.jp_df, st.session_state.comp_name_ls = funcs.get_data()
 
 
 with st.sidebar:
@@ -21,7 +21,7 @@ with st.sidebar:
                 1, 30, (10)
     )
 
-reviews_all = ' '.join(jp_df.query(f'comp_nm == "{comp_nm}"')['all_text'].tolist())
+reviews_all = ' '.join(st.session_state.jp_df.query(f'comp_nm == "{comp_nm}"')['all_text'].tolist())
 reviews_chunks = funcs.divide_into_chunks(reviews_all, max_chunk_size)
 
 candidate_labels = ['적극적', '수동적', '자신감', '신중함', '책임감', '무심함', '개인성향', '조직성향', '수평적', '위계적']
