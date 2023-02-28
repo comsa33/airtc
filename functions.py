@@ -14,6 +14,10 @@ import queries as nq
 from postgre import postgre_engine as engine
 
 
+filename = ['jp_comp_name_list']
+comp_name_ls = tuple(pickle.load(open(filename[0], 'rb')))
+
+
 @st.cache_data
 def get_data():
     with engine.connect() as conn:
@@ -21,9 +25,7 @@ def get_data():
 
     jp_df = pd.DataFrame(fetch)
     jp_df['all_text'] = jp_df['pros']+jp_df['cons']+jp_df['to_managements']
-    filename = ['jp_comp_name_list']
-    comp_name_ls = tuple(pickle.load(open(filename[0], 'rb')))
-    return jp_df, comp_name_ls
+    return jp_df
 
 
 def divide_into_chunks(text, max_chunk_size):

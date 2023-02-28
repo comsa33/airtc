@@ -2,18 +2,19 @@ import streamlit as st
 
 import functions as funcs
 
+if st.button('GET DATA'):
+    st.session_state.jp_df = funcs.get_data()
 
-st.session_state.jp_df, st.session_state.comp_name_ls = funcs.get_data()
-
+st.session_state.comp_name_ls = funcs.comp_name_ls
 
 with st.sidebar:
     st.text('[데이터 필터]')
     comp_nm = st.selectbox(
-        "회사명을 입력/선택하세요.",
+        "✓ 회사명을 입력/선택하세요.",
         st.session_state.comp_name_ls
     )
     max_chunk_size = st.slider(
-        'batch size를 선택하세요.',
+        '✓ batch size를 선택하세요.',
         0, 2000, (1500)
     )
     sample_n = st.slider(
@@ -28,7 +29,6 @@ candidate_labels = ['적극적', '수동적', '자신감', '신중함', '책임�
 multi_label_input = "ON"
 
 df_concat = funcs.get_df_concat(reviews_chunks, candidate_labels, sample_n)
-st.dataframe(df_concat)
 
 result_dict = {}
 for col_no in range(0, 10, 2):
@@ -60,5 +60,11 @@ user2 = [0.9, 0.4, 0.1, 0.6, 0.9]
 
 st.title('[그레이비랩 기업부설 연구소 / AI lab.]')
 
-funcs.draw_radar_chart(values1, categories1, user1, 'AIR', 'Ruo', comp_nm)
-funcs.draw_radar_chart(values2, categories2, user2, 'TC', 'Ruo', comp_nm)
+col1, col2 = st.columns(2)
+with col1:
+    funcs.draw_radar_chart(values1, categories1, user1, 'AIR', 'Ruo', comp_nm)
+with col2:
+    funcs.draw_radar_chart(values2, categories2, user2, 'TC', 'Ruo', comp_nm)
+
+st.checkbox("Use container width", value=False, key="use_container_width")
+st.dataframe(df_concat, use_container_width=st.session_state.use_container_width)
